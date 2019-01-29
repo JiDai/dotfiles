@@ -1,0 +1,41 @@
+#!/usr/bin/env bash
+
+if [[ -e "${MA_FOLDER}/MA-Infra/tools/gssh/gssh.sh" ]]; then
+  source "${MA_FOLDER}/MA-Infra/tools/gssh/gssh.sh"
+fi
+
+if [[ -e "${MA_REPOSITORY}/tools/.bashrc" ]]; then
+  source "${MA_REPOSITORY}/tools/.bashrc"
+
+  alias rebuild="ma_rebuild"
+  alias restart="ma_restart"
+  alias status="${HOME}/app_status.sh"
+fi
+
+alias ma='cd ${MA_FOLDER}'
+alias www='cd ${MA_REPOSITORY}/apps/www'
+alias site='cd ${MA_REPOSITORY}/apps/www/www/frontend/site'
+alias react='cd ${MA_REPOSITORY}/apps/www/www/frontend/react'
+alias common='cd ${MA_REPOSITORY}/apps/www/www/frontend/common'
+alias mypro='cd ${MA_REPOSITORY}/apps/MyPro'
+alias portfolio='cd ${MA_REPOSITORY}/apps/Portfolio/portfolio/frontend'
+alias jinjacommon='cd ${MA_REPOSITORY}/apps/JinjaCommon'
+
+alias selenium-chrome="open vnc://localhost:secret@localhost:5900"
+
+export PYENV_ROOT="${HOME}/.pyenv"
+export PATH="${PYENV_ROOT}/bin:${PATH}"
+export ANSIBLE_VAULT_PASSWORD_FILE="${HOME}/.vagrant_vault_pass.txt"
+
+if command -v pyenv 1>/dev/null 2>&1; then
+  eval "$(pyenv init -)"
+
+  if [[ $(pyenv commands | grep virtualenvwrapper | wc -l) -ne 0 ]]; then
+    pyenv virtualenvwrapper
+  fi
+fi
+
+alias vm="cd ${MA_FOLDER}/MA-Vm-Local && workon ansible2.2"
+alias vmr="vm && vagrant gatling-rsync-auto"
+alias vmu="vm && LC_ALL=C.UTF-8 LANG=C.UTF-8 vagrant up"
+alias vmp="vm && LC_ALL=C.UTF-8 LANG=C.UTF-8 vagrant provision"

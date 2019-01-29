@@ -1,0 +1,29 @@
+#!/usr/bin/env bash
+
+[[ -z "${PS1}" ]] && return
+
+readonly BASHRC_PATH=$(python -c 'import sys; import os.path; print(os.path.realpath(sys.argv[1]))' "${BASH_SOURCE[0]}")
+readonly DOTFILES_PATH=$(dirname ${BASHRC_PATH})
+
+if [[ -e "$DOTFILES_PATH/../dotfiles-env" ]]; then
+  source "$DOTFILES_PATH/../dotfiles-env"
+fi
+
+for file in "${DOTFILES_PATH}/../sources/"*; do
+  file_env_suffix=''
+  if [[ $file =~ .*__([a-z]+) ]]; then
+      file_env_suffix=${BASH_REMATCH[1]}
+  fi
+  # source files with specific matching env and ordinary files
+  if ([[ "$file_env_suffix" != "" ]] && [[ "$file_env_suffix" == "$DOTFILES_ENV" ]]) || [[ "$file_env_suffix" == "" ]]; then
+    [[ -r "${file}" ]] && [[ -f "${file}" ]] && source "${file}"
+  fi
+done
+
+if [[ -e "${HOME}/.bash_aliases" ]]; then
+  source "${HOME}/.bash_aliases"
+fi
+
+if [[ -e "${HOME}/.localrc" ]]; then
+  source "${HOME}/.localrc"
+fi

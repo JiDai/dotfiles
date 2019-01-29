@@ -1,0 +1,43 @@
+#!/usr/bin/env bash
+
+open_ports() {
+  if [[ "${IS_MACOS}" == true ]]; then
+    sudo lsof -PniTCP -sTCP:LISTEN
+  elif [[ "${IS_LINUX}" == true ]]; then
+    sudo netstat -pluton
+  fi
+}
+
+forward_local_port() {
+  if [[ "${#}" -ne 3 ]]; then
+    echo Usage: forward_local_port [LOCAL_PORT] [REMOTE_PORT] [SSH_PART]
+    return 1
+  fi
+
+  ssh -L "${1}:localhost:${2}" "${3}"
+}
+
+forward_remote_port() {
+  if [[ "${#}" -ne 3 ]]; then
+    echo Usage: forward_remote_port [REMOTE_PORT] [LOCAL_PORT] [SSH_PART]
+    return 1
+  fi
+
+  ssh -R "${1}:localhost:${2}" "${3}"
+}
+
+dnsFlushCache() {
+  if [[ "${IS_MACOS}" == true ]]; then
+    sudo dscacheutil -flushcache;sudo killall -HUP mDNSResponder
+
+    if command -v dnsmasq 2>&1 > /dev/null; then
+      sudo brew services restart dnsmasq
+    fi
+  elif [[ "${IS_LINUX}" == true ]]; then
+    sudo service network-manager restart
+
+    if command -v dnsmasq 2>&1 > /dev/null; then
+      sudo /etc/init.d/dnsmasq restart
+    fi
+  fi
+}
