@@ -5,9 +5,23 @@ set -o nounset
 set -o pipefail
 readonly SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
+source ./install_helpers.sh
+
+# Check env variables
+env_vars=( MA_FOLDER MA_REPOSITORY MA_DEV_API_IP )
+for env_var in ${env_vars[@]}; do
+  if [[ -z "${!env_var-}" ]]; then
+  	print_error "Please specify $env_var in env"
+	  exit 1
+  fi
+done
+
+
 if [[ "${IS_MACOS}" == true ]]; then
-  brew install python pyenv pyenv-virtualenvwrapper
-  brew cask install vagrant virtualbox tunnelblick
+  brew install python pyenv pyenv-virtualenv
+  brew cask install vagrant tunnelblick
+  # Must enable Oracle in System Preferences / Security for installing virtualbox
+  brew cask install virtualbox
 
   vagrant plugin install vagrant-notify
   vagrant plugin install vagrant-vbguest

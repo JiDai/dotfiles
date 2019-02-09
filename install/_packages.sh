@@ -23,10 +23,10 @@ main() {
       git \
       fswatch \
       openssl \
-      mackup \
       tree \
-      hub
-    brew install curl --with-openssl
+      hub \
+      httpie
+    #brew install curl --with-openssl
   elif command -v apt-get > /dev/null 2>&1; then
     sudo apt-get update
     sudo apt-get upgrade -y -qq

@@ -21,19 +21,12 @@ main() {
     print_subtitle "No dotfiles-env file found"
   fi
 
-  if [[ "$DOTFILES_ENV" != "" ]] && [[ -e "./install__$DOTFILES_ENV.sh" ]]; then
-    print_subtitle "Custom install ./install__$DOTFILES_ENV.sh..."
-    ./install__$DOTFILES_ENV.sh
-  else
-    print_subtitle "No dotfiles env"
-  fi
-
   print_title "symlinks"
   for file in "${SCRIPT_DIR}/symlinks"/*; do
     basenameFile=$(basename "${file}")
     print_subtitle "Source $basenameFile..."
 
-    [ -r "${file}" ] && [ -e "${file}" ] && rm -f "${SYMLINK_PATH}/.${basenameFile}" && ln -s "${file}" "${SYMLINK_PATH}/.${basenameFile}"
+    [ -r "${file}" ] && [ -e "${file}" ] && ln -sf "${file}" "${SYMLINK_PATH}/.${basenameFile}"
   done
 
   set +u
@@ -50,6 +43,13 @@ main() {
     [ -r "${file}" ] && [ -x "${file}" ] && "${file}"
   done
 
+  if [[ "$DOTFILES_ENV" != "" ]] && [[ -e "./install__$DOTFILES_ENV.sh" ]]; then
+    print_subtitle "Custom install ./install__$DOTFILES_ENV.sh..."
+    ./install__$DOTFILES_ENV.sh
+  else
+    print_subtitle "No dotfiles env"
+  fi
+
 
   print_title "Cleanup"
   if [[ "${IS_MACOS}" == true ]]; then
@@ -58,6 +58,8 @@ main() {
     sudo apt-get autoremove -y
     sudo apt-get clean all
   fi
+
+  print_subtitle "All done!"
 }
 
 main

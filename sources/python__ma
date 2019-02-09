@@ -29,13 +29,9 @@ export ANSIBLE_VAULT_PASSWORD_FILE="${HOME}/.vagrant_vault_pass.txt"
 
 if command -v pyenv 1>/dev/null 2>&1; then
   eval "$(pyenv init -)"
-
-  if [[ $(pyenv commands | grep virtualenvwrapper | wc -l) -ne 0 ]]; then
-    pyenv virtualenvwrapper
-  fi
 fi
 
-alias vm="cd ${MA_FOLDER}/MA-Vm-Local && workon ansible2.2"
+alias vm="cd ${MA_FOLDER}/MA-Vm-Local && pyenv activate ansible2.2"
 alias vmr="vm && vagrant gatling-rsync-auto"
 alias vmu="vm && LC_ALL=C.UTF-8 LANG=C.UTF-8 vagrant up"
 alias vmp="vm && LC_ALL=C.UTF-8 LANG=C.UTF-8 vagrant provision"
