@@ -19,14 +19,15 @@ main() {
       bash \
       bash-completion \
       htop \
+      curl \
       ncdu \
       git \
       fswatch \
       openssl \
       tree \
       hub \
-      httpie
-    #brew install curl --with-openssl
+      httpie \
+      mosh
   elif command -v apt-get > /dev/null 2>&1; then
     sudo apt-get update
     sudo apt-get upgrade -y -qq

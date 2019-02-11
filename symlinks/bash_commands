@@ -1,0 +1,9 @@
+
+function kill_port () {
+  if [[ -z "$1" ]]; then
+    lsof -i TCP:$1 | grep LISTEN | awk '{print $2}' | xargs kill
+  else
+    echo "Please specify a port"
+    exit 1
+  fi
+}

@@ -16,8 +16,8 @@ for env_var in ${env_vars[@]}; do
   fi
 done
 
-
 if [[ "${IS_MACOS}" == true ]]; then
+  sudo /usr/bin/easy_install virtualenv
   brew install python pyenv pyenv-virtualenv
   brew cask install vagrant tunnelblick
   # Must enable Oracle in System Preferences / Security for installing virtualbox
@@ -32,5 +32,5 @@ if [[ "${IS_MACOS}" == true ]]; then
   sudo installer -pkg /Library/Developer/CommandLineTools/Packages/macOS_SDK_headers_for_macOS_10.14.pkg -target /
 
   echo "10.42.42.2 www.meilleursagents.vm static.meilleursagents.vm static0.meilleursagents.vm fry2.meilleursagents.vm mailapi.meilleursagents.vm partners.meilleursagents.vm
-${MA_DEV_API_IP} api.meilleursagents.vm" | sudo tee -a /etc/hosts > /dev/null
+  ${MA_DEV_API_IP} api.meilleursagents.vm" | sudo tee -a /etc/hosts > /dev/null
 fi

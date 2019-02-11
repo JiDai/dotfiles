@@ -24,14 +24,20 @@ alias jinjacommon='cd ${MA_REPOSITORY}/apps/JinjaCommon'
 alias selenium-chrome="open vnc://localhost:secret@localhost:5900"
 
 export PYENV_ROOT="${HOME}/.pyenv"
+export PYENV_VIRTUALENV_DISABLE_PROMPT=1
 export PATH="${PYENV_ROOT}/bin:${PATH}"
 export ANSIBLE_VAULT_PASSWORD_FILE="${HOME}/.vagrant_vault_pass.txt"
 
 if command -v pyenv 1>/dev/null 2>&1; then
   eval "$(pyenv init -)"
+
+  if [[ $(pyenv commands | grep virtualenv | wc -l) -ne 0 ]]; then
+    eval "$(pyenv virtualenv-init -)"
+  fi
 fi
 
 alias vm="cd ${MA_FOLDER}/MA-Vm-Local && pyenv activate ansible2.2"
 alias vmr="vm && vagrant gatling-rsync-auto"
+alias vms="vm && vagrant ssh"
 alias vmu="vm && LC_ALL=C.UTF-8 LANG=C.UTF-8 vagrant up"
 alias vmp="vm && LC_ALL=C.UTF-8 LANG=C.UTF-8 vagrant provision"
