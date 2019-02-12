@@ -7,3 +7,14 @@ function kill_port () {
     exit 1
   fi
 }
+
+function versions () {
+  if command -v python > /dev/null 2>&1; then
+    python --version 2>&1
+  fi
+
+  if command -v node > /dev/null 2>&1; then
+    echo "Node $(node --version | sed 's/v//g')"
+    echo "NPM $(npm --version)"
+  fi
+}
